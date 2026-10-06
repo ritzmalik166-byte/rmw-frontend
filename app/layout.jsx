@@ -86,9 +86,9 @@ export const metadata = {
 
     images: [
       {
-        url: "https://ritzmediaworld.com/logo/rmw.logo.png",
-        width: 44,
-        height: 56,
+        url: "https://ritzmediaworld.com/gallery/rmw-latest-photo.jpg",
+        width: 1200,
+        height: 630,
         alt: "Ritz Media World: Creative + Strategy + Media Agency",
       },
     ],
@@ -105,7 +105,7 @@ export const metadata = {
 
     images: [
       {
-        url: "https://ritzmediaworld.com/logo/rmw.logo.png",
+        url: "https://ritzmediaworld.com/gallery/rmw-latest-photo.jpg",
         alt: "Ritz Media World: Creative + Strategy + Media Agency",
       },
     ],
