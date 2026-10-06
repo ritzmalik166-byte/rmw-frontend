@@ -2,7 +2,7 @@
 
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/InteractionPrefetchLink";
 import { usePathname } from "next/navigation";
 import { navServices as services } from "../../data/navServices";
 

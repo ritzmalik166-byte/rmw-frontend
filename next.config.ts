@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ["gsap", "three", "lucide-react"],
+    inlineCss: true,
   },
   turbopack: {
     root: configDir,

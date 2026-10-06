@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { onFirstInteraction } from "@/lib/onFirstInteraction";
 
 let gsapBundle = null;
 let gsapBundlePromise = null;
@@ -842,17 +843,23 @@ const Section4 = () => {
     const el = sectionRef.current;
     if (!el) return;
 
+    let cancelInteraction = () => {};
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
-        setShouldLoadMedia(true);
-        setPinReady(true);
         observer.disconnect();
+        setShouldLoadMedia(true);
+        // Pin/scrub/slider motion only matters once the visitor scrolls or
+        // touches, so keep GSAP off the initial load until then.
+        cancelInteraction = onFirstInteraction(() => setPinReady(true));
       },
       { rootMargin: "240px 0px" }
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      cancelInteraction();
+    };
   }, []);
 
   // Re-measure ScrollTrigger when Section 3 (or any prior sibling) changes height.

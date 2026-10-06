@@ -1,4 +1,4 @@
-import Script from "next/script";
+import GoogleAnalytics from "./component/common/GoogleAnalytics";
 import RouteAnimationReset from "./component/common/RouteAnimationReset";
 import { LOADER_SKIP_BOOTSTRAP } from "@/lib/isAutomationLab";
 import "./fonts.css";
@@ -61,6 +61,7 @@ export const metadata = {
     google: "UJDMaKvPAV5eAGJrDzTOTmxfhqT2OrUPSxwlVnAcgHs",
   },
 };
+
 export default function RootLayout({ children }) {
   return (
     <html
@@ -93,18 +94,7 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning
         className="min-h-full flex flex-col [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       >
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-          strategy="lazyOnload"
-        />
-        <Script id="google-analytics" strategy="lazyOnload">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}');
-          `}
-        </Script>
+        <GoogleAnalytics id={GA_MEASUREMENT_ID} />
         <RouteAnimationReset />
         {children}
       </body>
