@@ -1,9 +1,10 @@
-﻿/* Remix Icon subset - only icons used in this project (self-hosted). */
+﻿/* Remix Icon subset - only icons used in this project, embedded so icons need
+   no extra request. The data URI is public/fonts/remixicon/remixicon.woff2
+   (subset of remixicon 4.x); regenerate both when adding an icon below. */
 @font-face {
   font-family: "remixicon";
-  src: url("/fonts/remixicon/remixicon.woff2") format("woff2"),
-    url("/fonts/remixicon/remixicon.woff") format("woff");
-  font-display: swap;
+  src: url("data:font/woff2;base64,d09GMgABAAAAAAVQAAsAAAAACdQAAAUBAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHCoGYACBNAqMSIp5ATYCJAMoCyYABCAFgSQHIBscCACOk6WajSRJOh8eN+0lP7UEsXRiTFzIjHaWhJoEqIix7QymKvSmdKc6NwqAwD72a/XEkyhqKZMo7ULcd/o+IpbEJIlOF+sMIYpoMi2RIRQaoYBtQ+KyNoSxNzUteR7+90ABYNEG7UCPEqwiNBmJBVmoDwYA/H6IgxlmDzUHAQD9jowBsEWPQg/DAKr34gggwM9NdFgUnLlvfL6KfPRbZTApOAiAgkigWUwqTSCgSMdgzd+6FcxgwNw33g+/n3A/437W/ZwHrgdLH4oP1z6+9Pj1U/bprWd4vuL5Kr8fIv9H+Mf8AX49v4RfzC8yfWnKNh40puot+lAd0Q7WatUF6nxQII0BqlbobgaoYwB9HfIZgynZmoACDcaKJShWBYaEjBPwDQJVQZoGPMN00AUQQ6MGhrXsQJMON1PlE45WQ0WzREXl2yTFYXNqobGLDqdUbpfZFdmpabHyK5Q3xNXVMmy0y3ZPaj2ST1sj3tW65brkdDcRcY2fmD0hxOxaIc6OlEUZKOXbJJFMtuG8xZzi4AhXoiccXbOF1bm3UYTLdGewK9W5v3PQyJc9tv3Q093iKeglNg7sDsux5eK5cXXsmiN+EsWV5ihX4Eazcr1nKwKPvGGQa3up4mD0ZXZnec6CTaGLqADXYs7D5y5calpQ/iTL3i0GsYMAGYuNFzrdcz9VDlIff/z1oeWJG7eCrrlrTUj6to4iru1tExPoGl//xOTj9ygiSopsk4pFFpwks+5tQbtwXPLijQsRWLPAHWqTI7+dq26Arbb7WdR025Menej8HlmSNa19nZROox1sWa9fC5bBFz6r4UtfopKo4gRhOoA56DG3zgOLE1NUM9ZrLAIIIVZDm127MJ+gXGnTRsHl9Zl9YnpFRvaK6fNDxwcmXMP/wDvMTnDEtIlo7Xa3jmgT452gwoQL7pG9vPO2AkH48MHjtlhu3Ybt/uvXDfOAdzm+CXrf8a37Pk5p3NJsRvkc3stPpyWbo8A24cgp2pMzq/d4swe8U8TJXyqdFPRP+kMQnv4/rNHo+Eldwzt3Du866dQNFSZciad4xXilbFDKQLt9YMqglxNUmHAlvuQ1ymImt5jYAiHJjqIF8+zSP61Pzl1P0vzkMHO3pBMl1nwr+jybrU/4omdE7+Bz3CM2eIo+oXBkREv0/e2izycIPt8uS/2xDcLLTtEOsA/GxANQPCBl8EtAtZ/79WXhDcbWt8znn6xcLcRX6qn9ZPHCu+8/o/W0a8uiSLT+hVWY9v/A25L/13e0vtBHk2VsbNj1nl1sy5md4OUo7Xm96sCvYoc7dwRhxkzkzNvqPnDlwFu/ts053st36q9xLvi7wuGnQhpyj4zK/8eE0QPbT+rWu0fkttGjv/msHTvKexQ/JgZ525w3/eT3k+l80Eo/m5TaNXv2CJY9uyVbNBIEsuEtR7X/DKoEOURo3bCYdsb8j7Q3NKL/1H5B32rm39NKluTQmg3/78OIw4b/jw2JIwpAKkizoC1Fsqa8aiNyDZWf0sRK4kW3oQBQgOuHsoXx2kGvgjlmDwD8vebZKp39YuPxD5GPAIJBA1mOvyFGBkWI3k8G1eQgjBFCRaHGgF+g9wyMw4IQBQKKCQFgAuwwCgaYwmho0GYwWRvMICwAoegVF4jrTYYdmUhFCcwYi2RkIwt5fsDxOCLrO1GIDCRGCPINjfOb49rAjF7ogv4gENGrAAAAAA==") format("woff2");
+  font-display: block;
 }
 
 [class^="ri-"],
@@ -70,4 +71,13 @@
 }
 .ri-loader-4-line:before {
   content: "\eec6";
+}
+.ri-shield-check-line:before {
+  content: "\f100";
+}
+.ri-checkbox-circle-line:before {
+  content: "\eb81";
+}
+.ri-error-warning-line:before {
+  content: "\eca1";
 }
