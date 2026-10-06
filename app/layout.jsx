@@ -87,8 +87,8 @@ export const metadata = {
     images: [
       {
         url: "https://ritzmediaworld.com/logo/rmw.logo.png",
-        width: 1200,
-        height: 630,
+        width: 44,
+        height: 56,
         alt: "Ritz Media World: Creative + Strategy + Media Agency",
       },
     ],
