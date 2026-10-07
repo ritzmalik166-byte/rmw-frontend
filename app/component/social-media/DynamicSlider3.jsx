@@ -388,12 +388,12 @@ function DynamicSlider3({ heading, images, enableLightbox = false, }) {
                       current === videoKey ? null : videoKey
                     );
                   }}
-                  className={`absolute top-2 right-2 z-10 flex h-8 w-8 items-center justify-center rounded-full ${activeSoundVideo === videoKey ? "bg-white" : "bg-white/60"} text-[#1a1a1a] shadow-sm backdrop-blur-sm transition hover:bg-white cursor-pointer`}
+                  className={`absolute top-2 right-2 z-10 flex h-8 w-8 items-center justify-center rounded-full ${activeSoundVideo === videoKey ? "bg-[#007A0B]" : "bg-white/80"} text-[#1a1a1a] shadow-sm backdrop-blur-sm transition hover:bg-[#007A0B] cursor-pointer`}
                 >
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="currentColor"
+                    stroke={activeSoundVideo === videoKey ? "#ffffff" : "currentColor"}
                     strokeWidth="1.6"
                     strokeLinecap="round"
                     strokeLinejoin="round"
