@@ -231,7 +231,37 @@ export const categorySeoBySlug = {
       { h2: "Grow Your Business With Performance Marketing" },
     ],
   },
+
+  "fm-radio-advertising": {
+    title: "FM Radio Advertising Services | Ritz Media World",
+    description:
+      "Reach more customers with FM radio advertising by Ritz Media World. Get targeted campaigns, creative radio ads, media planning and competitive rates across India.",
+    keywords: [
+      "FM Radio Advertising Services",
+      "FM Radio Advertising",
+      "FM Radio Advertising Agency",
+      "FM Radio Advertising Company",
+      "FM Radio Advertising Agency in India",
+      "FM Radio Advertising Services in India",
+    ],
+    h1: "FM Radio Advertising", 
+    sections: [
+      { h2: "FM Radio Advertising in India" },
+      {
+        h2: "FM Radio Advertising Rates",
+        h2: ["Popular FM Radio Channels", "Types of FM Radio Advertising", "How to Book FM Radio Advertising"],
+      },
+      {
+        h2: "Benefits of FM Radio Advertising",
+        h2: ["FM Radio Advertising for Different Industries"],
+      },
+      { h2: "FM Radio Advertising FAQs" },
+      { h2: "Frequently Asked Questions" },
+      { h2: "Grow Your Business With FM Radio Advertising" },
+    ],
+  },
 };
+
 
 export function getCategorySeo(slug) {
   return categorySeoBySlug[slug] || null;
