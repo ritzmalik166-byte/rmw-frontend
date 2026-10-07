@@ -11,31 +11,35 @@ const editorsNoteLight =
 const influencer_marketing_videos = [
   {
     video: "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%201%20(1).mp4",
-    label: "Influencer Marketing Video 1",
+    label: "Influencer Marketing Video 1 - Ritz Media World",
   },
   {
     video: "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%202%20(1).mp4",
-    label: "Influencer Marketing Video 2",
+    label: "Influencer Marketing Video 2 - Ritz Media World",
   },
   {
     video: "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%203%20(1).mp4",
-    label: "Influencer Marketing Video 3",
+    label: "Influencer Marketing Video 3 - Ritz Media World",
   },
   {
     video: "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%204%20(1).mp4",
-    label: "Influencer Marketing Video 4",
+    label: "Influencer Marketing Video 4 - Ritz Media World",
   },
   {
     video: "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%2010%20(1).mp4",
-    label: "Influencer Marketing Video 5",
+    label: "Influencer Marketing Video 5 - Ritz Media World",
   },
   {
     video: "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%209%20(1).mp4",
-    label: "Influencer Marketing Video 6",
+    label: "Influencer Marketing Video 6 - Ritz Media World",
   },
   {
     video: "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%207.mp4",
-    label: "Influencer Marketing Video 7",
+    label: "Influencer Marketing Video 7 - Ritz Media World",
+  },
+  {
+    video: "https://contenaissance.blob.core.windows.net/ct-assets/644Px%20X%20621Px%20-%203%20(1).mp4",
+    label: "Influencer Marketing Video 8 - Ritz Media World",
   },
 ];
 

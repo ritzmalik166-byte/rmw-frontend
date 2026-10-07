@@ -1,6 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import gsap from "gsap";
 
 const SLIDES = [
@@ -51,7 +57,9 @@ const normalizeSlides = (images) => {
     const videoSrc = item.video || item.videoSrc || null;
     const src = item.src || videoSrc || "";
     const video =
-      videoSrc || (isVideoUrl(src) ? src : null) || (isVideoUrl(item.href) ? item.href : null);
+      videoSrc ||
+      (isVideoUrl(src) ? src : null) ||
+      (isVideoUrl(item.href) ? item.href : null);
 
     return {
       src,
@@ -120,7 +128,7 @@ function ScrollableImageLightbox({ image, onClose }) {
   );
 }
 
-function DynamicSlider3({ heading, images, enableLightbox = false }) {
+function DynamicSlider3({ heading, images, enableLightbox = false, }) {
   const containerRef = useRef(null);
   const trackRef = useRef(null);
   const tweenRef = useRef(null);
@@ -132,6 +140,7 @@ function DynamicSlider3({ heading, images, enableLightbox = false }) {
   const isLightboxOpenRef = useRef(false);
   const isMobileRef = useRef(false);
   const touchStartRef = useRef({ x: 0, y: 0, active: false });
+  const [activeSoundVideo, setActiveSoundVideo] = useState(null);
 
   const [metrics, setMetrics] = useState({
     cardWidth: 0,
@@ -159,11 +168,17 @@ function DynamicSlider3({ heading, images, enableLightbox = false }) {
     return { cardWidth, visibleCount, isMobile };
   }, []);
 
+ 
   const startMarquee = useCallback(() => {
     const track = trackRef.current;
     const loopWidth = loopWidthRef.current;
     // Mobile uses one-card snap only - no continuous marquee (avoids cut cards).
-    if (!track || loopWidth <= 0 || isHoveringRef.current || isMobileRef.current) {
+    if (
+      !track ||
+      loopWidth <= 0 ||
+      isHoveringRef.current ||
+      isMobileRef.current
+    ) {
       return;
     }
 
@@ -218,7 +233,7 @@ function DynamicSlider3({ heading, images, enableLightbox = false }) {
         },
       });
     },
-    [startMarquee]
+    [startMarquee],
   );
 
   useLayoutEffect(() => {
@@ -339,6 +354,10 @@ function DynamicSlider3({ heading, images, enableLightbox = false }) {
           style={{ gap: `${GAP_PX}px` }}
         >
           {loopSlides.map((slide, index) => {
+            const originalIndex = index % baseSlides.length;
+            const videoKey = `${originalIndex}-${slide.label}-${slide.video}`;
+            const isMuted = activeSoundVideo !== videoKey;
+
             const cardStyle = {
               width: metrics.cardWidth || "100%",
               height: cardHeight,
@@ -350,17 +369,49 @@ function DynamicSlider3({ heading, images, enableLightbox = false }) {
                 : ""
             }`;
             const img = slide.video ? (
-              <video
-                src={slide.video}
-                poster={slide.poster || undefined}
-                className={mediaClass}
-                muted
-                autoPlay
-                loop
-                playsInline
-                preload="auto"
-                draggable={false}
-              />
+              <>
+                <video
+                  src={slide.video}
+                  poster={slide.poster || undefined}
+                  className={mediaClass}
+                  muted={isMuted}
+                  autoPlay
+                  loop
+                  playsInline
+                  preload="auto"
+                  draggable={false}
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveSoundVideo((current) =>
+                      current === videoKey ? null : videoKey
+                    );
+                  }}
+                  className={`absolute top-2 right-2 z-10 flex h-8 w-8 items-center justify-center rounded-full ${activeSoundVideo === videoKey ? "bg-white" : "bg-white/60"} text-[#1a1a1a] shadow-sm backdrop-blur-sm transition hover:bg-white cursor-pointer`}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-4 w-4"
+                    aria-hidden="true"
+                  >
+                    {/* Megaphone body */}
+                    <path d="M4 10.5v3a1.5 1.5 0 0 0 1.5 1.5H7l9.5 4V5L7 9H5.5A1.5 1.5 0 0 0 4 10.5Z" />
+
+                    {/* Handle */}
+                    <path d="M7 15l1.4 4.1a1.5 1.5 0 0 0 1.42 1.02H11" />
+
+                    {/* Sound waves */}
+                    <path d="M19 8.5a5.5 5.5 0 0 1 0 7" />
+                    <path d="M21.5 6.5a9 9 0 0 1 0 11" />
+                  </svg>
+                </button>
+              </>
             ) : (
               <img
                 src={slide.src}

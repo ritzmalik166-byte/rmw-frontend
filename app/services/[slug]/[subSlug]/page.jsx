@@ -68,6 +68,7 @@ export default async function SubServicePage({ params }) {
   return (
       <>
       <Header />
+      <h1 className="sr-only">{heroTitle}</h1>
       <ServicesHero
         variant="subService"
         lineOne={heroTitle}
