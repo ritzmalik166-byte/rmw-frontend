@@ -22,42 +22,32 @@ const awards = [
   {
     year: "2024",
     image: "/award/awardsecion1.jpeg",
-    description: "Best Creative Agency (Real Estate) in Delhi/NCR By Big FM",
+    description: "Danik Jagran गौरव रत्न Award",
   },
   {
-    year: "2024",
+    year: "2021",
     image: "/award/awardnew.jpeg",
-    description: "Best Creative Agency (Real Estate) in Delhi/NCR By Big FM",
+    description: "ET Excellence Leadership Award",
   },
   {
-    year: "2024",
+    year: "2025",
     image: "/award/awardsection3.jpeg",
-    description: "Best Creative Agency (Real Estate) in Delhi/NCR By Big FM",
+    description: "ET Young Industry Leaders Award",
   },
   {
     year: "2024",
     image: "/award/awardnew1.jpeg",
-    description: "Best Creative Agency (Real Estate) in Delhi/NCR By Big FM",
-  },
-  {
-    year: "2025",
-    image: "/award/awardsecion5.jpeg",
-    description: "Best Creative Agency (Real Estate) in Delhi/NCR By Big FM",
+    description: "Excellence in Digital Media – Hindustan Times",
   },
   {
     year: "2025",
     image: "/award/awardsecion6.jpeg",
-    description: "Best Creative Agency (Real Estate) in Delhi/NCR By Big FM",
+    description: "Best Real Estate Podcast In India - HT Smartcast Podmasters Awards 2025",
   },
   {
     year: "2025",
     image: "/award/awardsecion7.jpeg",
-    description: "Best Creative Agency (Real Estate) in Delhi/NCR By Big FM",
-  },
-  {
-    year: "2025",
-    image: "/award/awardsecion8.jpeg",
-    description: "Best Creative Agency (Real Estate) in Delhi/NCR By Big FM",
+    description: "Most Trusted Advertising Agency in Delhi/NCR – The Economic Times",
   },
   {
     year: "2025",

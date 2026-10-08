@@ -51,6 +51,16 @@ const walkthrough_images = [
     src: "/walkthrough/maza-nahi-aaya.jpg",
     label: "Walkthrough 8",
     href: "https://youtu.be/xrhEXyUfBVM",
+  },
+  {
+    src: "/walkthrough/gulshan.jpg",
+    label: "Walkthrough 9",
+    href: "https://youtu.be/hnG-LjQYP5k",
+  },
+  {
+    src: "/walkthrough/northwind.jpg",
+    label: "Walkthrough 10",
+    href: "https://youtu.be/TjveWflbrkM",
   }
 ];
 
