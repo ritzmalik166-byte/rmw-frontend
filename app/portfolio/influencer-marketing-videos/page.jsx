@@ -10,36 +10,81 @@ const editorsNoteLight =
 
 const influencer_marketing_videos = [
   {
-    video: "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%201%20(1).mp4",
+    video:
+      "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%201%20(1).mp4",
     label: "Influencer Marketing Video 1 - Ritz Media World",
   },
   {
-    video: "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%202%20(1).mp4",
+    video:
+      "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%202%20(1).mp4",
     label: "Influencer Marketing Video 2 - Ritz Media World",
   },
   {
-    video: "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%203%20(1).mp4",
+    video:
+      "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%203%20(1).mp4",
     label: "Influencer Marketing Video 3 - Ritz Media World",
   },
   {
-    video: "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%204%20(1).mp4",
+    video:
+      "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%204%20(1).mp4",
     label: "Influencer Marketing Video 4 - Ritz Media World",
   },
   {
-    video: "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%2010%20(1).mp4",
+    video:
+      "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%2010%20(1).mp4",
     label: "Influencer Marketing Video 5 - Ritz Media World",
   },
   {
-    video: "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%209%20(1).mp4",
+    video:
+      "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%209%20(1).mp4",
     label: "Influencer Marketing Video 6 - Ritz Media World",
   },
   {
-    video: "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%207.mp4",
+    video:
+      "https://otherassets.blob.core.windows.net/rmw/644Px%20X%20621Px%20-%207.mp4",
     label: "Influencer Marketing Video 7 - Ritz Media World",
   },
   {
-    video: "https://contenaissance.blob.core.windows.net/ct-assets/644Px%20X%20621Px%20-%203%20(1).mp4",
+    video:
+      "https://contenaissance.blob.core.windows.net/ct-assets/644Px%20X%20621Px%20-%203%20(1).mp4",
     label: "Influencer Marketing Video 8 - Ritz Media World",
+  },
+
+  //https://contenaissance.blob.core.windows.net/ct-assets/2nd.mp4
+  // https://contenaissance.blob.core.windows.net/ct-assets/3rd.mp4
+  // https://contenaissance.blob.core.windows.net/ct-assets/4th.mp4
+  // https://contenaissance.blob.core.windows.net/ct-assets/5th.mp4
+  // https://contenaissance.blob.core.windows.net/ct-assets/6th.mp4
+  // https://contenaissance.blob.core.windows.net/ct-assets/7th.mp4
+  {
+    video:
+      "https://contenaissance.blob.core.windows.net/ct-assets/2nd.mp4",
+    label: "Influencer Marketing Video 9 - Ritz Media World",
+  },
+  {
+    video:
+      "https://contenaissance.blob.core.windows.net/ct-assets/3rd.mp4",
+    label: "Influencer Marketing Video 10 - Ritz Media World",
+  },
+  {
+    video:
+      "https://contenaissance.blob.core.windows.net/ct-assets/4th.mp4",
+    label: "Influencer Marketing Video 11 - Ritz Media World",
+  },
+  {
+    video:
+      "https://contenaissance.blob.core.windows.net/ct-assets/5th.mp4",
+    label: "Influencer Marketing Video 12 - Ritz Media World",
+  },
+  {
+    video:
+      "https://contenaissance.blob.core.windows.net/ct-assets/6th.mp4",
+    label: "Influencer Marketing Video 13 - Ritz Media World",
+  },
+  {
+    video:
+      "https://contenaissance.blob.core.windows.net/ct-assets/7th.mp4",
+    label: "Influencer Marketing Video 14 - Ritz Media World",
   },
 ];
 
@@ -58,29 +103,32 @@ function page() {
     <main style={{ fontFamily: editorsNoteLight }}>
       <Header title="Influencer Marketing Videos" />
       <Hero title="Authentic content that naturally integrates your brand into the creator’s voice." />
-      <DynamicSlider3 heading="Influencer Marketing Videos" images={influencer_marketing_videos}/>
+      <DynamicSlider3
+        heading="Influencer Marketing Videos"
+        images={influencer_marketing_videos}
+      />
       <Section2 />
       <Section10 />
       <div
-  style={{
-    position: "absolute",
-    width: "1px",
-    height: "1px",
-    padding: 0,
-    margin: "-1px",
-    overflow: "hidden",
-    clip: "rect(0, 0, 0, 0)",
-    whiteSpace: "nowrap",
-    border: 0,
-  }}
->
-  <h2>Influencer Marketing Videos</h2>
-  <h2>Influencer Marketing That Feels Authentic</h2>
-  <h2>Our Influencer Marketing Work</h2>
-  <h2>Creative Videos That Connect With Audiences</h2>
-  <h2>Why Choose Influencer Marketing?</h2>
-  <h2>Let’s Create Something People Remember</h2>
-</div>
+        style={{
+          position: "absolute",
+          width: "1px",
+          height: "1px",
+          padding: 0,
+          margin: "-1px",
+          overflow: "hidden",
+          clip: "rect(0, 0, 0, 0)",
+          whiteSpace: "nowrap",
+          border: 0,
+        }}
+      >
+        <h2>Influencer Marketing Videos</h2>
+        <h2>Influencer Marketing That Feels Authentic</h2>
+        <h2>Our Influencer Marketing Work</h2>
+        <h2>Creative Videos That Connect With Audiences</h2>
+        <h2>Why Choose Influencer Marketing?</h2>
+        <h2>Let’s Create Something People Remember</h2>
+      </div>
     </main>
   );
 }
