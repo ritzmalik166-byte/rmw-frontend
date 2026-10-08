@@ -61,7 +61,13 @@ const walkthrough_images = [
     src: "/walkthrough/northwind.jpg",
     label: "Walkthrough 10",
     href: "https://youtu.be/TjveWflbrkM",
-  }
+  },
+  {
+    src: "/walkthrough/vedvan-nature.jpg",
+    label: "Walkthrough 11",
+    href: "https://youtu.be/ub6D5lHq6DU",
+  },
+  
 ];
 
 export const metadata = {
