@@ -41,6 +41,17 @@ const walkthrough_images = [
     label: "Walkthrough 6",
     href: "https://youtu.be/ukRR5iNZv4I?si=hVwZjvApiZGmJZZr",
   },
+
+  {
+    src: "/walkthrough/aik-baar-phir.jpg",
+    label: "Walkthrough 7",
+    href: "https://youtu.be/gomdRsSkmz8",
+  },
+  {
+    src: "/walkthrough/maza-nahi-aaya.jpg",
+    label: "Walkthrough 8",
+    href: "https://youtu.be/xrhEXyUfBVM",
+  }
 ];
 
 export const metadata = {
