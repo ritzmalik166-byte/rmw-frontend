@@ -6,7 +6,8 @@ import DynamicSlider from "@/app/component/social-media/DynamicSlider";
 import SeoWalkThroughHeadings from "@/app/component/social-media/SeoWalkThroughHeadings";
 
 import Section2 from "@/app/component/work/portfolio/Section2";
-/** Webflow Editor's Note Light custom font stack */
+
+
 const editorsNoteLight =
   "wfont_e6fa52_d03d36fc891b44ea946b083dc8504aac, wf_d03d36fc891b44ea946b083dc, orig_editors_note_light, serif";
 
