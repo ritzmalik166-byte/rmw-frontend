@@ -2,8 +2,8 @@
 module.exports = {
   apps: [
     {
-      name: "new-rmw-v2",
-      cwd: "/var/www/new-RMW-2",
+      name: "rmw-frontend",
+      cwd: "/var/www/rmw-frontend",
       script: "npm",
       args: "run start",
       instances: 1,
