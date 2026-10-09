@@ -1,4 +1,4 @@
-/** PM2 config for Next.js server mode. Keep old `new-rmw` on :3000 for /api only. */
+/** PM2 config for rmw-frontend on port 3002 */
 module.exports = {
   apps: [
     {
@@ -10,7 +10,7 @@ module.exports = {
       exec_mode: "fork",
       env: {
         NODE_ENV: "production",
-        PORT: "3001",
+        PORT: "3002",
       },
       max_memory_restart: "400M",
     },
