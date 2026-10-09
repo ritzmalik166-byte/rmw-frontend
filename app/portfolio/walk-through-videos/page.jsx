@@ -68,6 +68,11 @@ const walkthrough_images = [
     label: "Walkthrough 11",
     href: "https://youtu.be/ub6D5lHq6DU",
   },
+  {
+    src: "/walkthrough/GHD-Thumbnail-Web.jpg",
+    label: "Walkthrough 12",
+    href: "https://youtu.be/4Z4ZOWnVJ4Y",
+  },
   
 ];
 
