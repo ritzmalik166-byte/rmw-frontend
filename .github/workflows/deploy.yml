@@ -35,6 +35,6 @@ jobs:
           npm run build
 
           echo "Restarting Project...."
-          pm2 restart new-rmw-v2
+          pm2 restart rmw-frontend
 
           echo "Deployed Successfully"

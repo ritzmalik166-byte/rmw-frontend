@@ -1,0 +1,92 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { connectDB } from "@/lib/db";
+import { Property } from "@/models/Property";
+
+export async function createProperty(
+  prevState: { message: string },
+  formData: FormData
+) {
+  const name = formData.get("name");
+  const city = formData.get("city");
+  const rawPrice = formData.get("price");
+
+  if (
+    typeof name !== "string" ||
+    !name.trim() ||
+    typeof city !== "string" ||
+    !city.trim() ||
+    typeof rawPrice !== "string"
+  ) {
+    return { message: "Please enter all property details." };
+  }
+
+  const price = Number(rawPrice);
+
+  if (!Number.isFinite(price) || price <= 0) {
+    return { message: "Enter a valid price greater than zero." };
+  }
+
+  // Authenticate the user and authorize property creation here.
+  await connectDB();
+
+  await Property.create({
+    name: name.trim(),
+    city: city.trim(),
+    price,
+  });
+
+  revalidatePath("/properties");
+
+  redirect("/properties");
+}
+
+
+
+// app/properties/new/PropertyForm.tsx
+"use client";
+
+import { useActionState } from "react";
+import { createProperty } from "@/app/actions/properties";
+import { SubmitButton } from "./SubmitButton";
+
+const initialState = { message: "" };
+
+export default function PropertyForm() {
+  const [state, formAction] = useActionState(
+    createProperty,
+    initialState
+  );
+
+  return (
+    <form action={formAction}>
+      <input
+        name="name"
+        placeholder="Property name"
+        required
+      />
+
+      <input
+        name="city"
+        placeholder="City"
+        required
+      />
+
+      <input
+        name="price"
+        type="number"
+        min="1"
+        placeholder="Price in rupees"
+        required
+      />
+
+      {state.message && (
+        <p role="alert">{state.message}</p>
+      )}
+
+      <SubmitButton />
+    </form>
+  );
+}

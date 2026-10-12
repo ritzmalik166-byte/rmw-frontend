@@ -22,6 +22,11 @@ const ooh_images = [
   "/portfolio-page/creatives/ooh_i10.jpg",
   "/portfolio-page/creatives/ooh_i11.jpg",
   "/portfolio-page/creatives/ooh_i12.jpg",
+  "/portfolio-page/creatives/ooh_i15.jpg",
+  "/portfolio-page/creatives/ooh_i16.jpg",
+  "/portfolio-page/creatives/ooh_i17.jpg",
+  "/portfolio-page/creatives/ooh_i19.jpg",
+  "/portfolio-page/creatives/ooh_i18.jpg",
 ];
 
 const stationary_images = [

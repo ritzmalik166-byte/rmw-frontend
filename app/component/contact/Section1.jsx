@@ -685,6 +685,7 @@ const Section1 = () => {
   useLayoutEffect(() => {
     if (!otpSent || otpVerified || resendCountdown <= 0) return;
 
+    
     const timer = window.setInterval(() => {
       setResendCountdown((current) => {
         if (current <= 1) {
