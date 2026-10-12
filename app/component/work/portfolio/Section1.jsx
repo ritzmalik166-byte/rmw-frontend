@@ -1,11 +1,12 @@
 import React from "react";
 import Image from "next/image";
-import { Playfair_Display } from "next/font/google";
+import localFont from "next/font/local";
 import Section1Row2 from "./Section1Row2";
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "500"],
+const playfair = localFont({
+  src: "../../../../public/fonts/google/playfair-display-latin-wght-normal.woff2",
+  weight: "400 500",
+  style: "normal",
   display: "swap",
 });
 

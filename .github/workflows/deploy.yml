@@ -1,40 +1,40 @@
-# name: Deploy Ritz Media World On Server
+name: Deploy Ritz Media World On Server
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
 
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout Code
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-#       - name: Deploy To Server
-#         uses: appleboy/ssh-action@v1.2.0
+      - name: Deploy To Server
+        uses: appleboy/ssh-action@v1.2.0
 
-#         with:
-#          host: ${{secrets.HOST}}
-#          username: ${{secrets.USERNAME}}
-#          key: ${{secrets.SSH_KEY}}
-#          port: ${{secrets.PORT}}
+        with:
+         host: ${{secrets.HOST}}
+         username: ${{secrets.USERNAME}}
+         key: ${{secrets.SSH_KEY}}
+         port: ${{secrets.PORT}}
          
-#          script: |
-#           set -e
+         script: |
+          set -e
           
-#           cd /
-#           cd ${{secrets.PROJECT_PATH}}
+          cd /
+          cd ${{secrets.PROJECT_PATH}}
 
-#           echo "Git Pulling Latest Changes"
-#           git pull origin main
+          echo "Git Pulling Latest Changes"
+          git pull origin main
 
-#           echo "Building Project"
-#           npm run build
+          echo "Building Project"
+          npm run build
 
-#           echo "Restarting Project...."
-#           pm2 restart new-rmw-v2
+          echo "Restarting Project...."
+          pm2 restart new-rmw-v2
 
-#           echo "Deployed Successfully"
+          echo "Deployed Successfully"

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SubmitButton from "../button/submitnew";
@@ -44,6 +44,11 @@ const fileInputClass =
   "w-full cursor-pointer bg-transparent py-2 text-sm text-white/70 outline-none file:mr-4 file:border-0 file:bg-transparent file:text-xs file:uppercase file:tracking-[1.2px] file:text-white/60";
 const inputLineClass =
   "pointer-events-none absolute bottom-0 left-0 block h-px w-full origin-left scale-x-0 bg-[#FFFFFF33]";
+const lockedInputClass = `${inputClass} read-only:cursor-not-allowed read-only:opacity-70`;
+
+const OTP_COUNTRY = "India";
+const OTP_RESEND_SECONDS = 45;
+const RESUME_EXTENSIONS = [".pdf", ".doc", ".docx"];
 
 const INDIAN_PHONE_REGEX = /^[6-9]\d{9}$/;
 const REPEATED_PATTERN_MESSAGE =
@@ -82,6 +87,43 @@ function validateIndianPhone(phone) {
     return REPEATED_PATTERN_MESSAGE;
   }
   return null;
+}
+
+function maskPhoneForDisplay(phone) {
+  const local = normalizeIndianPhone(phone);
+  if (!local || local.length < 4) return local;
+  return `${local.slice(0, 2)}****${local.slice(-2)}`;
+}
+
+function validateResume(file) {
+  if (!file || !(file instanceof File) || file.size === 0) {
+    return "Please upload your resume.";
+  }
+  const fileName = file.name.toLowerCase();
+  if (!RESUME_EXTENSIONS.some((ext) => fileName.endsWith(ext))) {
+    return "Please upload your resume as a PDF, DOC or DOCX file.";
+  }
+  return null;
+}
+
+function getServerMessage(result) {
+  return (
+    result?.message ||
+    result?.error ||
+    result?.errors?.[0]?.message ||
+    (typeof result?.errors?.[0] === "string" ? result.errors[0] : "") ||
+    ""
+  );
+}
+
+function isServerSuccess(response, result) {
+  if (result?.success === false || result?.ok === false) return false;
+  return (
+    response.ok ||
+    result?.success === true ||
+    result?.ok === true ||
+    result?.status === "success"
+  );
 }
 
 const EMAIL_INVALID_MESSAGE =
@@ -226,6 +268,168 @@ const Field = ({ label, children }) => (
     </div>
   </div>
 );
+
+const FieldError = ({ children }) =>
+  children ? (
+    <p
+      className="mt-2 text-xs"
+      style={{ fontFamily: sequelFontFamily, color: "#FF8A8A" }}
+    >
+      {children}
+    </p>
+  ) : null;
+
+function OtpInput({ value, onChange, onComplete, error, disabled }) {
+  const inputRefs = useRef([]);
+  const digits = value.padEnd(4, " ").split("").slice(0, 4);
+
+  const updateValue = (nextDigits) => {
+    const joined = nextDigits.join("").replace(/\s/g, "");
+    onChange(joined);
+    if (joined.length === 4 && onComplete) onComplete(joined);
+  };
+
+  const focusIndex = (index) => {
+    inputRefs.current[index]?.focus();
+    inputRefs.current[index]?.select();
+  };
+
+  const handleChange = (index, raw) => {
+    const digit = raw.replace(/\D/g, "").slice(-1);
+    const next = [...digits.map((d) => (d === " " ? "" : d))];
+    next[index] = digit;
+    while (next.length < 4) next.push("");
+    updateValue(next);
+
+    if (digit && index < 3) {
+      focusIndex(index + 1);
+    }
+  };
+
+  const handleKeyDown = (index, e) => {
+    if (e.key === "Backspace") {
+      e.preventDefault();
+      const next = [...digits.map((d) => (d === " " ? "" : d))];
+      if (next[index]) {
+        next[index] = "";
+        updateValue(next);
+      } else if (index > 0) {
+        next[index - 1] = "";
+        updateValue(next);
+        focusIndex(index - 1);
+      }
+      return;
+    }
+
+    if (e.key === "ArrowLeft" && index > 0) {
+      e.preventDefault();
+      focusIndex(index - 1);
+    }
+    if (e.key === "ArrowRight" && index < 3) {
+      e.preventDefault();
+      focusIndex(index + 1);
+    }
+  };
+
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pasted = e.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, 4);
+    if (!pasted) return;
+    onChange(pasted);
+    if (pasted.length === 4 && onComplete) onComplete(pasted);
+    focusIndex(Math.min(pasted.length, 3));
+  };
+
+  return (
+    <div
+      className="grid grid-cols-4 gap-3 md:gap-4"
+      role="group"
+      aria-label="Enter 4-digit verification code"
+    >
+      {digits.map((digit, index) => (
+        <input
+          key={index}
+          ref={(el) => {
+            inputRefs.current[index] = el;
+          }}
+          type="text"
+          inputMode="numeric"
+          autoComplete={index === 0 ? "one-time-code" : "off"}
+          maxLength={1}
+          value={digit === " " ? "" : digit}
+          disabled={disabled}
+          aria-invalid={error ? "true" : undefined}
+          onChange={(e) => handleChange(index, e.target.value)}
+          onKeyDown={(e) => handleKeyDown(index, e)}
+          onPaste={handlePaste}
+          onFocus={(e) => e.target.select()}
+          className={`h-14 w-full border-b-1 border-b-white/10 text-center text-3xl font-semibold text-white outline-none transition-all duration-200 md:h-16 md:text-3xl ${
+            error
+              ? "focus:ring-[#FF8A8A]/45"
+              : digit && digit !== " "
+                ? "focus:ring-[#FFD188]/50"
+                : "hover:bg-white/[0.04] focus:ring-[#FFD188]/30"
+          } disabled:cursor-not-allowed disabled:opacity-50`}
+          style={{ fontFamily: sequelFontFamily }}
+          data-otp-index={index}
+        />
+      ))}
+    </div>
+  );
+}
+
+function FormStatusAlert({ status, onDismiss }) {
+  if (!status) return null;
+
+  const isSuccess = status.type === "success";
+  const isOtpSent = status.variant === "otp-sent";
+
+  return (
+    <div
+      role={isSuccess ? "status" : "alert"}
+      aria-live="polite"
+      className="relative mt-6 overflow-hidden py-5 md:py-6"
+    >
+      <button
+        type="button"
+        onClick={onDismiss}
+        className="absolute top-4 right-4 cursor-pointer text-white/45 transition-colors hover:text-white/80"
+        aria-label="Dismiss message"
+      >
+        <i className="ri-close-line text-xl" />
+      </button>
+
+      <div className="min-w-0 pr-8">
+        <p
+          className="text-[13px] tracking-[1.2px] uppercase"
+          style={{
+            fontFamily: sequelFontFamily,
+            color: isSuccess ? (isOtpSent ? "#FFD188" : "#7CFFB2") : "#FF8A8A",
+          }}
+        >
+          {status.title || (isSuccess ? "Success" : "Something went wrong")}
+        </p>
+        <p
+          className="mt-2 text-sm leading-6 text-white/85 md:text-[15px]"
+          style={{ fontFamily: sequelFontFamily }}
+        >
+          {status.text}
+        </p>
+        {status.hint ? (
+          <p
+            className="mt-2 text-xs leading-5 text-white/55"
+            style={{ fontFamily: sequelFontFamily }}
+          >
+            {status.hint}
+          </p>
+        ) : null}
+      </div>
+    </div>
+  );
+}
 
 const headingWords = ["YOUR", "NEXT", "BIG", "IDEA"];
 
@@ -374,8 +578,44 @@ const section1 = () => {
   const [nameError, setNameError] = useState(null);
   const [phoneError, setPhoneError] = useState(null);
   const [emailError, setEmailError] = useState(null);
+  const [resumeError, setResumeError] = useState(null);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [verifiedPhone, setVerifiedPhone] = useState("");
+  const [otpError, setOtpError] = useState(null);
+  const [otpValue, setOtpValue] = useState("");
+  const [sendingOtp, setSendingOtp] = useState(false);
+  const [resendCountdown, setResendCountdown] = useState(0);
+
+  const formLocked = otpSent && !otpVerified;
+
+  useEffect(() => {
+    if (!formLocked || resendCountdown <= 0) return;
+    const timer = window.setTimeout(() => {
+      setResendCountdown((current) => Math.max(current - 1, 0));
+    }, 1000);
+    return () => window.clearTimeout(timer);
+  }, [formLocked, resendCountdown]);
+
+  useEffect(() => {
+    if (!formLocked) return;
+    const timer = window.setTimeout(() => {
+      formRef.current?.querySelector('[data-otp-index="0"]')?.focus();
+    }, 150);
+    return () => window.clearTimeout(timer);
+  }, [formLocked]);
+
+  const resetOtpState = () => {
+    setOtpSent(false);
+    setOtpVerified(false);
+    setVerifiedPhone("");
+    setOtpValue("");
+    setOtpError(null);
+    setResendCountdown(0);
+  };
 
   const handleNameInput = (e) => {
+    if (formLocked) return;
     e.currentTarget.value = e.currentTarget.value.replace(
       /[^A-Za-z '-]/g,
       "",
@@ -384,12 +624,124 @@ const section1 = () => {
   };
 
   const handlePhoneInput = (e) => {
+    if (formLocked) return;
     e.currentTarget.value = e.currentTarget.value.replace(/[^0-9+]/g, "");
     if (phoneError) setPhoneError(null);
+    if (otpVerified) resetOtpState();
   };
 
   const handleEmailInput = () => {
     if (emailError) setEmailError(null);
+  };
+
+  const handleResumeChange = () => {
+    if (resumeError) setResumeError(null);
+  };
+
+  const sendOtp = async (phone) => {
+    setSendingOtp(true);
+    setOtpError(null);
+
+    try {
+      const response = await fetch("/otp/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone, country: OTP_COUNTRY }),
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        const message =
+          result.message || "Could not send OTP. Please try again.";
+        setOtpError(message);
+        setStatus({
+          type: "error",
+          variant: "otp-error",
+          title: "OTP not sent",
+          text: message,
+          hint:
+            response.status === 429
+              ? "Please wait a moment before requesting another code."
+              : "Check your phone number and try again, or refresh the page to start over.",
+        });
+        return false;
+      }
+
+      setOtpSent(true);
+      setOtpVerified(false);
+      setVerifiedPhone("");
+      setOtpValue("");
+      setResendCountdown(OTP_RESEND_SECONDS);
+      setStatus({
+        type: "success",
+        variant: "otp-sent",
+        title: "Verification code sent",
+        text: `We sent a 4-digit code to ${maskPhoneForDisplay(phone)}.`,
+        hint: "Your application details are locked while you verify. Enter the code below or refresh the page to edit again.",
+      });
+      return true;
+    } catch (error) {
+      console.error("OTP send error:", error);
+      const message = "Could not send OTP. Please try again.";
+      setOtpError(message);
+      setStatus({
+        type: "error",
+        variant: "otp-error",
+        title: "OTP not sent",
+        text: message,
+        hint: "Please check your connection and try again.",
+      });
+      return false;
+    } finally {
+      setSendingOtp(false);
+    }
+  };
+
+  const verifyOtp = async (phone, otp) => {
+    try {
+      const response = await fetch("/otp/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone, country: OTP_COUNTRY, otp }),
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        const message = result.message || "Invalid OTP. Please try again.";
+        setOtpError(message);
+        setStatus({
+          type: "error",
+          variant: "otp-verify-error",
+          title: "Verification failed",
+          text: message,
+          hint: "Double-check the 4-digit code or tap Resend OTP to get a new one.",
+        });
+        return false;
+      }
+
+      setOtpVerified(true);
+      setVerifiedPhone(phone);
+      setOtpError(null);
+      setStatus({
+        type: "success",
+        variant: "otp-verified",
+        title: "Phone verified",
+        text: "Your number is verified. Submitting your application now.",
+      });
+      return true;
+    } catch (error) {
+      console.error("OTP verify error:", error);
+      const message = "Could not verify OTP. Please try again.";
+      setOtpError(message);
+      setStatus({
+        type: "error",
+        variant: "otp-verify-error",
+        title: "Verification failed",
+        text: message,
+        hint: "Please try entering the code again.",
+      });
+      return false;
+    }
   };
 
   const uploadResume = async (resumeFile) => {
@@ -401,30 +753,70 @@ const section1 = () => {
         method: "POST",
         body: uploadData,
       });
-      return await response.json();
+      const result = await response.json().catch(() => ({}));
+      const ok = isServerSuccess(response, result) && !!result?.filePath;
+
+      if (!ok) {
+        console.error("upload-resume failed:", {
+          status: response.status,
+          statusText: response.statusText,
+          result,
+        });
+      }
+
+      return {
+        ok,
+        filePath: result?.filePath,
+        message: getServerMessage(result),
+        httpStatus: response.status,
+      };
     } catch (error) {
       console.error("Error uploading resume:", error);
-      return { success: false, error: "Failed to upload resume" };
+      return { ok: false, message: "", httpStatus: 0 };
     }
   };
 
-  const submitFormFields = async (formData) => {
+  const submitApplication = async (formData) => {
     try {
       formData.append("etype", "career");
       const response = await fetch("/api/system-settings/contact-enquiry", {
         method: "POST",
         body: formData,
       });
-      return await response.json();
+      const result = await response.json().catch(() => ({}));
+      const ok = isServerSuccess(response, result);
+
+      if (!ok) {
+        console.error("career contact-enquiry failed:", {
+          status: response.status,
+          statusText: response.statusText,
+          result,
+        });
+      }
+
+      return {
+        ok,
+        message: getServerMessage(result),
+        httpStatus: response.status,
+      };
     } catch (error) {
       console.error("Error submitting form fields:", error);
-      return { success: false, error: "Failed to submit form fields" };
+      return { ok: false, message: "", httpStatus: 0 };
     }
+  };
+
+  const showValidationError = (text) => {
+    setStatus({
+      type: "error",
+      variant: "validation-error",
+      title: "Check your details",
+      text,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (submitting) return;
+    if (submitting || sendingOtp) return;
 
     const form = e.currentTarget;
     const formData = new FormData(form);
@@ -436,82 +828,144 @@ const section1 = () => {
     const nameValidationError = validateName(name, "first name");
     if (nameValidationError) {
       setNameError(nameValidationError);
-      setStatus({ type: "error", text: nameValidationError });
+      showValidationError(nameValidationError);
       return;
     }
 
     const emailValidationError = validateEmail(email);
     if (emailValidationError) {
       setEmailError(emailValidationError);
-      setStatus({ type: "error", text: emailValidationError });
+      showValidationError(emailValidationError);
       return;
     }
 
     const phoneValidationError = validateIndianPhone(phone);
     if (phoneValidationError) {
       setPhoneError(phoneValidationError);
-      setStatus({ type: "error", text: phoneValidationError });
+      showValidationError(phoneValidationError);
       return;
     }
 
-    if (!resumeFile || (resumeFile instanceof File && resumeFile.size === 0)) {
-      setStatus({ type: "error", text: "Please upload your resume." });
+    const resumeValidationError = validateResume(resumeFile);
+    if (resumeValidationError) {
+      setResumeError(resumeValidationError);
+      showValidationError(resumeValidationError);
       return;
     }
 
-    formData.set("name", name);
-    formData.set("email", email);
-    formData.set("phone", normalizeIndianPhone(phone));
+    const normalizedPhone = normalizeIndianPhone(phone);
 
     setSubmitting(true);
     setStatus(null);
     setNameError(null);
     setPhoneError(null);
     setEmailError(null);
+    setResumeError(null);
+    setOtpError(null);
 
-    try {
-      const resumeUploaded = await uploadResume(resumeFile);
-      if (!resumeUploaded.success) {
+    const phoneVerified = otpVerified && verifiedPhone === normalizedPhone;
+
+    if (!phoneVerified) {
+      if (!otpSent) {
+        await sendOtp(normalizedPhone);
+        setSubmitting(false);
+        return;
+      }
+
+      const enteredOtp = otpValue.trim();
+      if (!/^\d{4}$/.test(enteredOtp)) {
+        const message = "Enter the 4-digit OTP sent to your phone.";
+        setOtpError(message);
         setStatus({
           type: "error",
+          variant: "otp-verify-error",
+          title: "Enter verification code",
+          text: message,
+          hint: "Please enter all 4 digits from the SMS we sent you.",
+        });
+        setSubmitting(false);
+        return;
+      }
+
+      const verified = await verifyOtp(normalizedPhone, enteredOtp);
+      if (!verified) {
+        setSubmitting(false);
+        return;
+      }
+    }
+
+    formData.set("name", name);
+    formData.set("email", email);
+    formData.set("phone", normalizedPhone);
+
+    try {
+      const upload = await uploadResume(resumeFile);
+      if (!upload.ok) {
+        setStatus({
+          type: "error",
+          variant: "upload-error",
+          title: "Resume upload failed",
           text:
-            "Resume upload failed: " +
-            (resumeUploaded.error || "Unknown error"),
+            upload.message ||
+            (upload.httpStatus
+              ? `Resume upload failed (HTTP ${upload.httpStatus}). Please try again.`
+              : "Could not upload your resume. Please check your connection and try again."),
+          hint: "Your phone is already verified, so you can retry without a new code.",
         });
         return;
       }
 
-      formData.append("resumePath", resumeUploaded.filePath);
+      formData.append("resumePath", upload.filePath);
       formData.delete("resume");
 
-      const formSubmitted = await submitFormFields(formData);
-      if (!formSubmitted.success) {
+      const submission = await submitApplication(formData);
+      if (!submission.ok) {
         setStatus({
           type: "error",
+          variant: "submit-error",
+          title: "Submission failed",
           text:
-            "Form submission failed: " +
-            (formSubmitted.error || "Please try again."),
+            submission.message ||
+            (submission.httpStatus
+              ? `Submission failed (HTTP ${submission.httpStatus}). Please try again.`
+              : "Server error. Please try again later."),
+          hint: "Your phone is already verified, so you can retry without a new code.",
         });
         return;
       }
 
       setStatus({
         type: "success",
-        text: formSubmitted.message || "Application submitted successfully!",
+        variant: "submit-success",
+        title: "Application submitted",
+        text: submission.message || "Application submitted successfully!",
+        hint: "Our team will review your profile and get in touch if there's a match.",
       });
       form.reset();
       setNameError(null);
       setPhoneError(null);
       setEmailError(null);
+      setResumeError(null);
+      resetOtpState();
     } catch (error) {
       console.error("Error during submission:", error);
       setStatus({
         type: "error",
+        variant: "submit-error",
+        title: "Server error",
         text: "An unexpected error occurred. Please try again later.",
+        hint: "If the issue continues, refresh the page and try again.",
       });
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleResendOtp = () => {
+    const form = formRef.current;
+    if (!form) return;
+    const phone = (new FormData(form).get("phone") || "").toString().trim();
+    sendOtp(normalizeIndianPhone(phone));
   };
 
   useLayoutEffect(() => {
@@ -684,22 +1138,13 @@ const section1 = () => {
                   type="text"
                   name="name"
                   required
-                  className={inputClass}
+                  readOnly={formLocked}
+                  className={lockedInputClass}
                   onInput={handleNameInput}
                   aria-invalid={nameError ? "true" : undefined}
                 />
               </Field>
-              {nameError ? (
-                <p
-                  className="mt-2 text-xs"
-                  style={{
-                    fontFamily: sequelFontFamily,
-                    color: "#FF8A8A",
-                  }}
-                >
-                  {nameError}
-                </p>
-              ) : null}
+              <FieldError>{nameError}</FieldError>
             </div>
             <div>
               <Field label=" EMAIL ADDRESS*">
@@ -707,22 +1152,13 @@ const section1 = () => {
                   type="email"
                   name="email"
                   required
-                  className={inputClass}
+                  readOnly={formLocked}
+                  className={lockedInputClass}
                   onInput={handleEmailInput}
                   aria-invalid={emailError ? "true" : undefined}
                 />
               </Field>
-              {emailError ? (
-                <p
-                  className="mt-2 text-xs"
-                  style={{
-                    fontFamily: sequelFontFamily,
-                    color: "#FF8A8A",
-                  }}
-                >
-                  {emailError}
-                </p>
-              ) : null}
+              <FieldError>{emailError}</FieldError>
             </div>
           </div>
 
@@ -733,45 +1169,45 @@ const section1 = () => {
                   type="tel"
                   name="phone"
                   required
+                  readOnly={formLocked}
                   inputMode="numeric"
                   maxLength={14}
-                  className={inputClass}
+                  className={lockedInputClass}
                   onInput={handlePhoneInput}
                   aria-invalid={phoneError ? "true" : undefined}
                 />
               </Field>
-              {phoneError ? (
-                <p
-                  className="mt-2 text-xs"
-                  style={{
-                    fontFamily: sequelFontFamily,
-                    color: "#FF8A8A",
-                  }}
-                >
-                  {phoneError}
-                </p>
-              ) : null}
+              <FieldError>{phoneError}</FieldError>
             </div>
             <Field label="Apply For*">
               <input
                 type="text"
                 name="category"
                 required
-                className={inputClass}
+                readOnly={formLocked}
+                className={lockedInputClass}
               />
             </Field>
           </div>
 
           <div className="mt-8 md:mt-10 ">
             <Field label="UPLOAD RESUME*">
+              {/* Not `disabled` while locked: disabled inputs are dropped from FormData. */}
               <input
                 type="file"
                 name="resume"
                 accept=".pdf,.doc,.docx"
                 required
-                className={fileInputClass}
+                aria-disabled={formLocked ? "true" : undefined}
+                aria-invalid={resumeError ? "true" : undefined}
+                onClick={(e) => {
+                  if (formLocked) e.preventDefault();
+                }}
+                onChange={handleResumeChange}
+                className={`${fileInputClass} ${formLocked ? "pointer-events-none opacity-70" : ""}`}
               />
             </Field>
+            <FieldError>{resumeError}</FieldError>
           </div>
 
           <div className="mt-8 md:mt-10">
@@ -779,31 +1215,87 @@ const section1 = () => {
               <textarea
                 rows={4}
                 name="message"
-                className={`${inputClass} resize-none`}
+                readOnly={formLocked}
+                className={`${lockedInputClass} resize-none`}
               />
             </Field>
           </div>
 
-          
+          {formLocked ? (
+            <div className="mt-8 md:mt-10">
+              <p
+                className="text-[12px] tracking-[1.2px] uppercase"
+                style={{ fontFamily: sequelFontFamily, color: "#FFD188" }}
+              >
+                Verify your phone
+              </p>
+              <p
+                className="mt-1 text-sm text-white/75"
+                style={{ fontFamily: sequelFontFamily }}
+              >
+                Enter the 4-digit code sent to your mobile number.
+              </p>
+
+              <OtpInput
+                value={otpValue}
+                onChange={(next) => {
+                  setOtpValue(next);
+                  if (otpError) setOtpError(null);
+                }}
+                error={otpError}
+                disabled={submitting || sendingOtp}
+              />
+
+              {otpError ? (
+                <p
+                  className="mt-4 flex items-center gap-2 text-xs"
+                  style={{ fontFamily: sequelFontFamily, color: "#FF8A8A" }}
+                >
+                  <i className="ri-error-warning-line text-base" />
+                  {otpError}
+                </p>
+              ) : null}
+
+              <p
+                className="mt-4 text-xs text-white/55"
+                style={{ fontFamily: sequelFontFamily }}
+              >
+                Didn&apos;t receive the code?{" "}
+                <button
+                  type="button"
+                  className="cursor-pointer font-medium text-[#FFD188] underline underline-offset-2 transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
+                  disabled={sendingOtp || submitting || resendCountdown > 0}
+                  onClick={handleResendOtp}
+                >
+                  {sendingOtp
+                    ? "Sending..."
+                    : resendCountdown > 0
+                      ? `Resend OTP in ${resendCountdown}s`
+                      : "Resend OTP"}
+                </button>
+              </p>
+            </div>
+          ) : null}
 
           <SubmitButton
-            disabled={submitting}
-            label={submitting ? "SUBMITTING..." : "SUBMIT"}
+            disabled={submitting || sendingOtp}
+            label={
+              sendingOtp
+                ? "SENDING OTP..."
+                : submitting
+                  ? formLocked
+                    ? "VERIFYING..."
+                    : "SUBMITTING..."
+                  : formLocked
+                    ? "VERIFY & SUBMIT"
+                    : "SUBMIT"
+            }
           />
 
-          {status && (
-            <p
-              role="status"
-              aria-live="polite"
-              className="mt-4 text-sm"
-              style={{
-                fontFamily: sequelFontFamily,
-                color: status.type === "success" ? "#7CFFB2" : "#FF8A8A",
-              }}
-            >
-              {status.text}
-            </p>
-          )}
+          <FormStatusAlert
+            status={status}
+            onDismiss={() => setStatus(null)}
+          />
         </form>
       </div>
     </section>
