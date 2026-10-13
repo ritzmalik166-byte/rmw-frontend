@@ -73,6 +73,11 @@ const walkthrough_images = [
     label: "Walkthrough 12",
     href: "https://youtu.be/4Z4ZOWnVJ4Y",
   },
+  {
+    src: "/walkthrough/laadli-shyamvan.jpg",
+    label: "Walkthrough 13",
+    href: "https://youtu.be/suYaoZ-oNvU",
+  },
   
 ];
 
