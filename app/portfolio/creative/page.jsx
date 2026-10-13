@@ -92,6 +92,8 @@ const social_media_creatives_images = [
   "/portfolio-page/creatives/social_media_creatives_i19.jpg",
   "/portfolio-page/creatives/social_media_creatives_i20.jpg",
   "/portfolio-page/creatives/social_media_creatives_i21.jpg",
+  "/portfolio-page/creatives/social_media_creatives_i22.jpg",
+  "/portfolio-page/creatives/social_media_creatives_i23.jpg",
 ];
 
 export const metadata = {
