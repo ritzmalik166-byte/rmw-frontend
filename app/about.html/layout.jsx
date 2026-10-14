@@ -2,7 +2,7 @@ export const metadata = {
     metadataBase: new URL("https://ritzmediaworld.com/"),
     title: "About Ritz Media World | Award-Winning Delhi NCR Advertising Agency",
     description:
-        "Learn how Ritz Media World crafts data-driven brand stories and digital campaigns. Over 17 years of experience turning brands into household names in Delhi NCR.",
+        "Learn how Ritz Media World crafts data-driven brand stories and digital campaigns. Over 18 years of experience turning brands into household names in Delhi NCR.",
     keywords: [
         "Ritz Media World",
         "advertising agency Delhi NCR",
