@@ -72,6 +72,51 @@ const normalizeSlides = (images) => {
   });
 };
 
+function LazyVideo({ src, poster, className, muted, rootRef, sectionNear }) {
+  const videoRef = useRef(null);
+  const [inRange, setInRange] = useState(false);
+  const [activated, setActivated] = useState(false);
+  const active = sectionNear && inRange;
+
+  useEffect(() => {
+    const el = videoRef.current;
+    const root = rootRef.current;
+    if (!el || !root) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setInRange(entry.isIntersecting),
+      { root, rootMargin: "0px 25% 0px 25%" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [rootRef]);
+
+  useEffect(() => {
+    if (active) setActivated(true);
+  }, [active]);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el || !activated) return;
+    if (active) el.play().catch(() => {});
+    else el.pause();
+  }, [active, activated]);
+
+  return (
+    <video
+      ref={videoRef}
+      src={activated ? src : undefined}
+      poster={poster || undefined}
+      className={className}
+      muted={muted}
+      loop
+      playsInline
+      preload={activated ? "auto" : "none"}
+      draggable={false}
+    />
+  );
+}
+
 function useLightboxLock(open, onClose) {
   useEffect(() => {
     if (!open) return undefined;
@@ -141,6 +186,7 @@ function DynamicSlider3({ heading, images, enableLightbox = false, }) {
   const isMobileRef = useRef(false);
   const touchStartRef = useRef({ x: 0, y: 0, active: false });
   const [activeSoundVideo, setActiveSoundVideo] = useState(null);
+  const [sectionNear, setSectionNear] = useState(false);
 
   const [metrics, setMetrics] = useState({
     cardWidth: 0,
@@ -262,6 +308,18 @@ function DynamicSlider3({ heading, images, enableLightbox = false, }) {
     };
   }, [metrics.cardWidth, metrics.isMobile, baseSlides.length, startMarquee]);
 
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setSectionNear(entry.isIntersecting),
+      { rootMargin: "400px 0px" },
+    );
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
   // Touch swipe: one full card per swipe on mobile.
   useEffect(() => {
     const container = containerRef.current;
@@ -370,16 +428,13 @@ function DynamicSlider3({ heading, images, enableLightbox = false, }) {
             }`;
             const img = slide.video ? (
               <>
-                <video
+                <LazyVideo
                   src={slide.video}
-                  poster={slide.poster || undefined}
+                  poster={slide.poster}
                   className={mediaClass}
                   muted={isMuted}
-                  autoPlay
-                  loop
-                  playsInline
-                  preload="auto"
-                  draggable={false}
+                  rootRef={containerRef}
+                  sectionNear={sectionNear}
                 />
                 <button
                   type="button"

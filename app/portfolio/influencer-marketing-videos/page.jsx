@@ -88,6 +88,9 @@ const influencer_marketing_videos = [
   },
 ];
 
+export const dynamic = "force-static";
+export const revalidate = false;
+
 export const metadata = {
   title: "Influencer Marketing Videos | Ritz Media World",
   description:
@@ -97,6 +100,7 @@ export const metadata = {
       "https://ritzmediaworld.com/portfolio/influencer-marketing-videos",
   },
 };
+
 
 function page() {
   return (

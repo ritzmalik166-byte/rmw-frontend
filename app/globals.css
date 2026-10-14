@@ -18,8 +18,7 @@ html.rmw-skip-loader [data-rmw-loader-overlay] {
 
 @font-face {
   font-family: "Sequel Sans";
-  src: url("/fonts/Sequel-Sans-Font-Family/Sequel-Sans-Font-Family-DEMO/Sequel Sans OTF/Sequel Sans Roman Body.otf")
-    format("opentype");
+  src: url("/fonts/sequel-sans/sequel-sans-roman-body.woff2") format("woff2");
   font-weight: 310;
   font-style: normal;
   font-display: swap;
@@ -27,8 +26,7 @@ html.rmw-skip-loader [data-rmw-loader-overlay] {
 
 @font-face {
   font-family: "Sequel Sans";
-  src: url("/fonts/Sequel-Sans-Font-Family/Sequel-Sans-Font-Family-DEMO/Sequel Sans OTF/Sequel Sans Medium Head.otf")
-    format("opentype");
+  src: url("/fonts/sequel-sans/sequel-sans-medium-head.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -36,8 +34,7 @@ html.rmw-skip-loader [data-rmw-loader-overlay] {
 
 @font-face {
   font-family: "Sequel Sans";
-  src: url("/fonts/Sequel-Sans-Font-Family/Sequel-Sans-Font-Family-DEMO/Sequel Sans OTF/Sequel Sans Medium Disp.otf")
-    format("opentype");
+  src: url("/fonts/sequel-sans/sequel-sans-medium-disp.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;

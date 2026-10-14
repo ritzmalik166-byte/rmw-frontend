@@ -97,16 +97,14 @@ const Section3 = () => {
       <style>{`
         @font-face {
           font-family: "Sequel Sans";
-          src: url("/fonts/Sequel-Sans-Font-Family/Sequel-Sans-Font-Family-DEMO/Sequel Sans OTF/Sequel Sans Roman Body.otf")
-            format("opentype");
+          src: url("/fonts/sequel-sans/sequel-sans-roman-body.woff2") format("woff2");
           font-weight: 310;
           font-style: normal;
           font-display: swap;
         }
         @font-face {
           font-family: "Sequel Sans";
-          src: url("/fonts/Sequel-Sans-Font-Family/Sequel-Sans-Font-Family-DEMO/Sequel Sans OTF/Sequel Sans Semi Bold Head.otf")
-            format("opentype");
+          src: url("/fonts/sequel-sans/sequel-sans-semi-bold-head.woff2") format("woff2");
           font-weight: 370;
           font-style: normal;
           font-display: swap;

@@ -648,7 +648,7 @@ const Footer = ({ section = null }) => {
                 className="google-source-btn inline-flex w-fit max-w-[200px] items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-semibold leading-[1.15] text-[#171717] shadow-[0_4px_14px_rgba(0,0,0,0.12)] transition-transform duration-300 hover:scale-[1.02] sm:max-w-[220px] sm:gap-2 sm:px-3.5 sm:py-2 sm:text-[12px] md:text-[13px]"
               >
                 <img
-                  src="/google-logo.png"
+                  src="/google-logo2.png"
                   alt="Google"
                   title="Google"
                   width={24}
@@ -783,7 +783,7 @@ const Footer = ({ section = null }) => {
       >
         <img
           ref={revealLogoRef}
-          src="/logo/r-logo-new.png"
+          src="/logo/r-logo-new2.png"
           alt="Ritz Media World"
           title="Ritz Media World"
           width={1048}

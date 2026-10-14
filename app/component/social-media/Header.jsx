@@ -4,7 +4,7 @@ function Header({ title }) {
   return (
     <div className="w-full h-auto relative">
         <img
-          src="/social-media/creative_nav.png"
+          src="/social-media/creative_nav2.jpg"
           alt="header"
           title="Ritz Media World"
           className="w-full h-[100px] sm:h-[120px] md:h-[140px] lg:h-[161px] object-cover"

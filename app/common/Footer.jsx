@@ -428,40 +428,35 @@ const Footer = ({ overlaySection = null }) => {
       <style>{`
         @font-face {
           font-family: "Sequel Sans";
-          src: url("/fonts/Sequel-Sans-Font-Family/Sequel-Sans-Font-Family-DEMO/Sequel Sans OTF/Sequel Sans Light Disp.otf")
-            format("opentype");
+          src: url("/fonts/sequel-sans/sequel-sans-light-disp.woff2") format("woff2");
           font-weight: 400;
           font-style: normal;
           font-display: swap;
         }
         @font-face {
           font-family: "Sequel Sans";
-          src: url("/fonts/Sequel-Sans-Font-Family/Sequel-Sans-Font-Family-DEMO/Sequel Sans OTF/Sequel Sans Bold Disp.otf")
-            format("opentype");
+          src: url("/fonts/sequel-sans/sequel-sans-bold-disp.woff2") format("woff2");
           font-weight: 425;
           font-style: normal;
           font-display: swap;
         }
         @font-face {
           font-family: "Sequel Sans";
-          src: url("/fonts/Sequel-Sans-Font-Family/Sequel-Sans-Font-Family-DEMO/Sequel Sans OTF/Sequel Sans Semi Bold Disp.otf")
-            format("opentype");
+          src: url("/fonts/sequel-sans/sequel-sans-semi-bold-disp.woff2") format("woff2");
           font-weight: 420;
           font-style: normal;
           font-display: swap;
         }
         @font-face {
           font-family: "Sequel Sans";
-          src: url("/fonts/Sequel-Sans-Font-Family/Sequel-Sans-Font-Family-DEMO/Sequel Sans OTF/Sequel Sans Semi Bold Head.otf")
-            format("opentype");
+          src: url("/fonts/sequel-sans/sequel-sans-semi-bold-head.woff2") format("woff2");
           font-weight: 370;
           font-style: normal;
           font-display: swap;
         }
         @font-face {
           font-family: "Sequel Sans";
-          src: url("/fonts/Sequel-Sans-Font-Family/Sequel-Sans-Font-Family-DEMO/Sequel Sans OTF/Sequel Sans Roman Disp.otf")
-            format("opentype");
+          src: url("/fonts/sequel-sans/sequel-sans-roman-disp.woff2") format("woff2");
           font-weight: 410;
           font-style: normal;
           font-display: swap;
@@ -475,7 +470,7 @@ const Footer = ({ overlaySection = null }) => {
         <img
           ref={footerRevealLogoRef}
           data-footer-reveal-logo
-          src="/logo/r-logo-new.png"
+          src="/logo/r-logo-new2.png"
           alt="Ritz Media World"
           title="Ritz Media World"
           className="h-[300px] w-[250px] max-w-none object-contain will-change-transform md:h-[517px] md:w-[431px]"

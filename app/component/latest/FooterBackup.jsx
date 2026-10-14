@@ -766,7 +766,7 @@ const Footer = ({ section = null }) => {
       >
         <img
           ref={revealLogoRef}
-          src="/logo/r-logo-new.png"
+          src="/logo/r-logo-new2.png"
           alt="Ritz Media World"
           title="Ritz Media World"
           className="h-[160px] w-auto max-w-none object-contain will-change-transform sm:h-[180px] md:h-[220px] lg:h-[220px] xl:h-[280px] 2xl:h-[360px]"
