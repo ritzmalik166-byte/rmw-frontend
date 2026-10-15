@@ -1,13 +1,7 @@
-"use client";
-
-import React, { useLayoutEffect, useRef } from "react";
-import Link from "next/link";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React from "react";
+import { getImageProps } from "next/image";
 import { Montserrat } from "next/font/google";
-import { services, getServiceHref } from "../../../data/services";
-
-gsap.registerPlugin(ScrollTrigger);
+import RevealOnScroll from "./RevealOnScroll";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -29,22 +23,6 @@ const bodyTextStyle = {
   color: "#333333",
 };
 
-const sidebarLabelStyle = {
-  fontFamily: "Montserrat, sans-serif",
-  fontSize: "20px",
-  fontWeight: 500,
-  lineHeight: "normal",
-  color: "rgba(51, 51, 51, 0.60)",
-};
-
-const serviceLinkStyle = {
-  fontFamily: "Montserrat, sans-serif",
-  fontSize: "20px",
-  fontWeight: 500,
-  lineHeight: "28px",
-  color: "#333333",
-};
-
 const bannerTitleStyle = {
   fontFamily: '"League Spartan", sans-serif',
   fontWeight: 600,
@@ -53,60 +31,67 @@ const bannerTitleStyle = {
   color: "#FFFFFF",
 };
 
-const Reveal = ({ children, className = "" }) => (
+const Reveal = ({ children, index = 0, className = "" }) => (
   <span className={`block overflow-hidden py-[2px] ${className}`}>
-    <span data-svc-intro-reveal className="block w-full">
+    <span
+      className="block w-full translate-y-[110%] transition-transform duration-[1100ms] ease-[cubic-bezier(0.23,1,0.32,1)] group-data-[revealed=true]:translate-y-0 motion-reduce:translate-y-0 motion-reduce:transition-none"
+      style={{ transitionDelay: `${index * 100}ms` }}
+    >
       {children}
     </span>
   </span>
 );
 
-const sidebarServices = services.map((item) => ({
-  label: item.title.toUpperCase(),
-  href: getServiceHref(item.slug),
-}));
+const bannerImageClassName =
+  "block h-full min-h-0 w-full object-cover object-center md:h-auto";
+
+function IntroBannerImage({ image, sizes }) {
+  const common = {
+    alt: "Ritz Media World",
+    title: "Ritz Media World",
+    width: image.width,
+    height: image.height,
+    sizes,
+    loading: "eager",
+    fetchPriority: "high",
+    className: bannerImageClassName,
+  };
+
+  const {
+    props: { srcSet: desktopSrcSet, ...desktopProps },
+  } = getImageProps({ ...common, src: image.src });
+
+  if (!image.mobileSrc) {
+    return <img {...desktopProps} srcSet={desktopSrcSet} />;
+  }
+
+  const {
+    props: { srcSet: mobileSrcSet, ...mobileProps },
+  } = getImageProps({ ...common, src: image.mobileSrc });
+
+  return (
+    <picture>
+      <source media="(min-width: 768px)" srcSet={desktopSrcSet} sizes={sizes} />
+      <img {...mobileProps} srcSet={mobileSrcSet} />
+    </picture>
+  );
+}
 
 const normalizeIntroImage = (image) =>
   typeof image === "string"
     ? { src: image, width: 1, height: 1, aspectRatio: "1 / 1" }
     : image;
 
-const ServiceDetailIntro = ({ intro, activeSlug, title }) => {
-  const sectionRef = useRef(null);
-  const contentRef = useRef(null);
-
-  useLayoutEffect(() => {
-    const content = contentRef.current;
-    if (!content) return;
-
-    const ctx = gsap.context(() => {
-      const items = gsap.utils.toArray("[data-svc-intro-reveal]", content);
-      gsap.set(items, { yPercent: 110 });
-
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: content,
-          start: "top 85%",
-          toggleActions: "play none none reset",
-        },
-      }).to(items, {
-        yPercent: 0,
-        duration: 1.1,
-        ease: "power4.out",
-        stagger: 0.1,
-      });
-    }, content);
-
-    return () => ctx.revert();
-  }, []);
-
+const ServiceDetailIntro = ({ intro, title }) => {
   if (!intro) return null;
 
   const introImages = intro.images.map(normalizeIntroImage);
+  const bannerSizes =
+    introImages.length > 1 ? `(min-width: 640px) ${Math.round(100 / introImages.length)}vw, 100vw` : "100vw";
   const bodyParagraphs = Array.isArray(intro.body) ? intro.body : [intro.body];
 
   return (
-    <section ref={sectionRef} className="m-0 overflow-x-clip bg-[#F1F1F1] pt-0">
+    <section className="m-0 overflow-x-clip bg-[#F1F1F1] pt-0">
       <div className="flex w-full flex-col gap-5 sm:flex-row sm:items-start">
         {introImages.map((image, index) => {
           const bannerLabel = intro.bannerTitle ?? title;
@@ -115,29 +100,7 @@ const ServiceDetailIntro = ({ intro, activeSlug, title }) => {
               key={`${image.src}-${index}`}
               className="relative h-[550px] w-full min-w-0 overflow-hidden md:h-auto"
             >
-              {image.mobileSrc ? (
-                <picture>
-                  <source media="(min-width: 768px)" srcSet={image.src} />
-                  <img
-                    src={image.mobileSrc}
-                    alt="Ritz Media World"
-                    title="Ritz Media World"
-
-                    width={image.width}
-                    height={image.height}
-                    className="block h-full min-h-0 w-full object-cover object-center md:h-auto"
-                  />
-                </picture>
-              ) : (
-                <img
-                  src={image.src}
-                  alt="Ritz Media World"
-                  title="Ritz Media World"
-                  width={image.width}
-                  height={image.height}
-                  className="block h-full min-h-0 w-full object-cover object-center md:h-auto"
-                />
-              )}
+              <IntroBannerImage image={image} sizes={bannerSizes} />
               <div
                 className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-black/20"
                 aria-hidden
@@ -157,8 +120,7 @@ const ServiceDetailIntro = ({ intro, activeSlug, title }) => {
         })}
       </div>
 
-      <div
-        ref={contentRef}
+      <RevealOnScroll
         className={`${montserrat.className} mx-auto flex text-center w-full max-w-[1440px] items-center justify-center px-6 sm:px-10  md:px-[50px] py-[35px] md:py-[70px] `}
       >
         <div className="w-full">
@@ -169,7 +131,7 @@ const ServiceDetailIntro = ({ intro, activeSlug, title }) => {
           </Reveal>
 
           <div className="mt-5 flex flex-col gap-10 md:mt-6 lg:flex-row lg:items-end lg:justify-between lg:gap-12 xl:gap-16">
-            <Reveal className="min-w-0 flex-1 ">
+            <Reveal index={1} className="min-w-0 flex-1 ">
               {bodyParagraphs.map((paragraph, index) => (
                 <p
                   key={index}
@@ -179,33 +141,9 @@ const ServiceDetailIntro = ({ intro, activeSlug, title }) => {
                 />
               ))}
             </Reveal>
-
-            {/* <aside className="min-w-0 w-full shrink-0 lg:ml-auto lg:w-[280px] xl:w-[320px]">
-              <Reveal>
-                <p className="m-0 text-right uppercase" style={sidebarLabelStyle}>
-                  {intro.sidebarLabel ?? "Services"}
-                </p>
-              </Reveal>
-
-              <ul className="mt-5 space-y-0 sm:mt-6">
-                {sidebarServices.map((item) => (
-                  <li key={item.label}>
-                    <Reveal>
-                      <Link
-                        href={item.href}
-                        className="block text-right uppercase transition-opacity duration-300 hover:opacity-70"
-                        style={serviceLinkStyle}
-                      >
-                        {item.label}
-                      </Link>
-                    </Reveal>
-                  </li>
-                ))}
-              </ul>
-            </aside> */}
           </div>
         </div>
-      </div>
+      </RevealOnScroll>
     </section>
   );
 };

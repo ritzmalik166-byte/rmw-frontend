@@ -1,9 +1,9 @@
-"use client";
-
 import React from "react";
+import Image from "next/image";
 import { Montserrat } from "next/font/google";
+import LazyVideo from "./LazyVideo";
 import ServiceDetailMediaButton from "./ServiceDetailMediaButton";
-import ServiceDetailFourGallery from "./ServiceDetailFourGallery";
+import { ServiceDetailFourGallery } from "./LazyServiceSections";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -53,6 +53,23 @@ const linkProps = (href) =>
         rel: "noopener noreferrer",
       }
     : {};
+
+const sizeFromAspectRatio = (aspectRatio = "1 / 1") => {
+  const [width, height] = String(aspectRatio).split("/").map((part) => parseFloat(part));
+  return { width: width || 1, height: height || 1 };
+};
+
+const MediaImage = ({ src, width, height, sizes }) => (
+  <Image
+    src={src}
+    alt="Ritz Media World"
+    title="Ritz Media World"
+    width={Math.round(width)}
+    height={Math.round(height)}
+    sizes={sizes}
+    className="block h-full w-full object-cover object-center"
+  />
+);
 
 const MediaLinkWrap = ({ href, title, className = "", style, children }) => {
   if (!href) {
@@ -115,24 +132,18 @@ const ServiceDetailMediaSection = ({ mediaSection }) => {
                 }}
               >
                 {video.src.includes(".mp4") ? (
-                  <video
+                  <LazyVideo
                     src={video.src}
                     width={video.width ?? 561}
                     height={video.height ?? 342}
                     className="block h-full w-full object-cover object-center"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
                   />
                 ) : (
-                  <img
+                  <MediaImage
                     src={video.src}
-                    alt="Ritz Media World"
-                    title="Ritz Media World"
                     width={video.width ?? 561}
                     height={video.height ?? 342}
-                    className="block h-full w-full object-cover object-center"
+                    sizes="(min-width: 1280px) 561px, (min-width: 1024px) 48vw, calc(100vw - 48px)"
                   />
                 )}
               </MediaLinkWrap>
@@ -155,24 +166,18 @@ const ServiceDetailMediaSection = ({ mediaSection }) => {
               }}
             >
               {image.src.includes(".mp4") ? (
-                <video
+                <LazyVideo
                   src={image.src}
                   width={image.width ?? 720.953}
                   height={image.height ?? 762.712}
                   className="block h-full w-full object-cover object-center"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
                 />
               ) : (
-                <img
+                <MediaImage
                   src={image.src}
-                  alt="Ritz Media World"
-                  title="Ritz Media World"
                   width={image.width ?? 720.953}
                   height={image.height ?? 762.712}
-                  className="block h-full w-full object-cover object-center"
+                  sizes="(min-width: 1280px) 721px, (min-width: 1024px) 48vw, calc(100vw - 48px)"
                 />
               )}
             </MediaLinkWrap>
@@ -244,20 +249,15 @@ const ServiceDetailMediaSection = ({ mediaSection }) => {
                 }}
               >
                 {item.src.includes(".mp4") ? (
-                  <video
+                  <LazyVideo
                     src={item.src}
                     className="block h-full w-full object-cover object-center"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
                   />
                 ) : (
-                  <img
+                  <MediaImage
                     src={item.src}
-                    alt="Ritz Media World"
-                    title="Ritz Media World"
-                    className="block h-full w-full object-cover object-center"
+                    {...sizeFromAspectRatio(item.aspectRatio)}
+                    sizes="(min-width: 1440px) 700px, (min-width: 1024px) 50vw, calc(100vw - 48px)"
                   />
                 )}
               </MediaLinkWrap>

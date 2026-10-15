@@ -37,8 +37,8 @@ export const services = [
     intro: {
       images: [
         {
-          src: "/digital-marketing/digital-banner.jpg",
-          mobileSrc: "/digital-marketing/digital-marketing-banner.jpg",
+          src: "/digital-marketing/digital-banner_comp.jpg",
+          mobileSrc: "/digital-marketing/digital-marketing-banner_comp.jpg",
           width: 1440,
           height: 630,
         },
@@ -113,7 +113,7 @@ export const services = [
       description:
         "Digital Marketing Agency Ritz Media World helps brands turn attention into actual growth. We handle SEO, Social Media Marketing, PPC, Reputation Management, Lead Generation, and Brand Awareness, building strategies across India that get results you can measure and count on.",
       image: {
-        src: "/digital-marketing/rmw-29.jpg",
+        src: "/digital-marketing/rmw-29_comp.jpg",
         width: 720.953,
         height: 762.712,
         aspectRatio: "69 / 73",
@@ -137,17 +137,17 @@ export const services = [
       grid: {
         items: [
           {
-            src: "/digital-marketing/two.jpg",
+            src: "/digital-marketing/two_comp.jpg",
             className: "lg:col-span-2 lg:col-start-1 lg:row-start-1",
             aspectRatio: "672 / 355",
           },
           {
-            src: "/digital-marketing/graph.jpg",
+            src: "/digital-marketing/graph_comp.jpg",
             className: "lg:col-span-2 lg:row-start-2",
             aspectRatio: "696 / 572",
           },
           {
-            src: "/digital-marketing/digital-1.jpg",
+            src: "/digital-marketing/digital-1_comp.jpg",
             className: "lg:col-start-3 lg:row-span-2 lg:row-start-1",
             aspectRatio: "613 / 965",
           },

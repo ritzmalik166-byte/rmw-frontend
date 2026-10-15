@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ServiceDetailMediaButton from "./ServiceDetailMediaButton";
@@ -216,12 +217,14 @@ function GalleryCardMedia({ src, index, activeAudioIndex, onActivateAudio }) {
 
   if (!isVideo) {
     return (
-      <img
+      <Image
         data-svc-image
         src={src}
         alt="Ritz Media World"
         title="Ritz Media World"
-        className="absolute inset-0 h-full w-full object-cover object-top will-change-transform"
+        fill
+        sizes="(min-width: 768px) 50vw, 100vw"
+        className="object-cover object-top will-change-transform"
         draggable={false}
       />
     );

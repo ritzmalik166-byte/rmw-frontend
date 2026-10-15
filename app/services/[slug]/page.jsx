@@ -3,11 +3,10 @@ import { notFound } from "next/navigation";
 import Header from "../../common/Header";
 import Footer from "../../component/latest/Footer";
 import OverlaySection1 from "../../component/latest/OverlaySection1";
-import ServicesHero from "../../component/services/ServicesHero";
+import { ServicesHero } from "../../component/services/LazyServiceSections";
 import ServiceDetailIntro from "../../component/services/ServiceDetailIntro";
 import ServiceDetailCarousel from "../../component/services/ServiceDetailCarousel";
 import ServiceDetailMediaSection from "../../component/services/ServiceDetailMediaSection";
-import ServiceDetailContent from "../../component/services/ServiceDetailContent";
 import { getServiceBySlug, services } from "../../../data/services";
 import { getServiceSeoHeadings } from "../../../data/serviceSeoHeadings";
 
@@ -31,6 +30,9 @@ function ServiceSeoHeadings({ slug }) {
     </div>
   );
 }
+
+export const dynamic = "force-static";
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return services.map((service) => ({ slug: service.slug }));
@@ -76,11 +78,7 @@ export default async function ServiceDetailPage({ params }) {
         />
       ) : null}
       {service.intro ? (
-        <ServiceDetailIntro
-          intro={service.intro}
-          activeSlug={service.slug}
-          title={service.title}
-        />
+        <ServiceDetailIntro intro={service.intro} title={service.title} />
       ) : null}
       {service.carousel ? (
         <ServiceDetailCarousel
@@ -91,7 +89,6 @@ export default async function ServiceDetailPage({ params }) {
       {service.mediaSection ? (
         <ServiceDetailMediaSection mediaSection={service.mediaSection} />
       ) : null}
-      <ServiceDetailContent service={service} />
       <Footer section={<OverlaySection1 />} />
     </>
   );

@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
 import { usePathname } from "next/navigation";
+import { onFirstInteraction } from "@/lib/onFirstInteraction";
 const sequelFontFamily = '"Sequel Sans", sans-serif';
 
 const connectLabelStyle = {
@@ -647,7 +648,7 @@ const Footer = ({ section = null }) => {
                 aria-label="Add Ritz Media World as a preferred source on Google"
                 className="google-source-btn inline-flex w-fit max-w-[200px] items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-semibold leading-[1.15] text-[#171717] shadow-[0_4px_14px_rgba(0,0,0,0.12)] transition-transform duration-300 hover:scale-[1.02] sm:max-w-[220px] sm:gap-2 sm:px-3.5 sm:py-2 sm:text-[12px] md:text-[13px]"
               >
-                <img
+                <Image
                   src="/google-logo2.png"
                   alt="Google"
                   title="Google"
@@ -781,13 +782,13 @@ const Footer = ({ section = null }) => {
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 select-none"
       >
-        <img
+        <Image
           ref={revealLogoRef}
           src="/logo/r-logo-new2.png"
           alt="Ritz Media World"
           title="Ritz Media World"
-          width={1048}
-          height={1259}
+          width={300}
+          height={360}
           className="h-[160px] w-auto max-w-none object-contain will-change-transform sm:h-[180px] md:h-[220px] lg:h-[220px] xl:h-[280px] 2xl:h-[360px]"
           style={{
             filter: "brightness(3.2) contrast(1.05)",
@@ -841,14 +842,25 @@ const Footer = ({ section = null }) => {
   );
 };
 
-const ClarityScript = () => (
-  <Script id="microsoft-clarity" strategy="afterInteractive">
-    {`(function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "yuw3enkgmk");`}
-  </Script>
-);
+const CLARITY_ID = "yuw3enkgmk";
+
+const ClarityScript = () => {
+  useEffect(
+    () =>
+      onFirstInteraction(() => {
+        if (window.clarity) return;
+        window.clarity = function clarity() {
+          (window.clarity.q = window.clarity.q || []).push(arguments);
+        };
+        const script = document.createElement("script");
+        script.async = true;
+        script.src = `https://www.clarity.ms/tag/${CLARITY_ID}`;
+        document.head.appendChild(script);
+      }),
+    []
+  );
+
+  return null;
+};
 
 export default Footer;
