@@ -1,17 +1,22 @@
 "use client";
 
-import React, { Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import BlogListingGrid from "./BlogListingGrid";
 import { formatTagTitle, normalizeBlogItem } from "../../../lib/caseStudyApi";
 import { refreshFooterScroll } from "../../../lib/footerRefresh";
 
-function TagsContent({ keyword }) {
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+function TagsContent({ keyword, initialBlogs }) {
+  const [blogs, setBlogs] = useState(initialBlogs ?? []);
+  const [loading, setLoading] = useState(!initialBlogs);
   const title = formatTagTitle(keyword);
 
   useEffect(() => {
+    if (initialBlogs) {
+      setBlogs(initialBlogs);
+      setLoading(false);
+      return;
+    }
+
     if (!keyword) {
       setBlogs([]);
       setLoading(false);
@@ -41,7 +46,7 @@ function TagsContent({ keyword }) {
     return () => {
       cancelled = true;
     };
-  }, [keyword]);
+  }, [keyword, initialBlogs]);
 
   useEffect(() => {
     if (loading) return;
@@ -90,30 +95,6 @@ function TagsContent({ keyword }) {
   );
 }
 
-function TagsQueryInner() {
-  const searchParams = useSearchParams();
-  const keyword = searchParams.get("keyword") || "";
-
-  return <TagsContent keyword={keyword} />;
-}
-
-export default function TagsQueryPage() {
-  return (
-    <Suspense
-      fallback={
-        <p
-          className="py-10 text-center text-[16px] text-[#666]"
-          style={{ fontFamily: '"Montserrat", sans-serif' }}
-        >
-          Loading...
-        </p>
-      }
-    >
-      <TagsQueryInner />
-    </Suspense>
-  );
-}
-
-export function TagsKeywordPage({ keyword }) {
-  return <TagsContent keyword={keyword} />;
+export function TagsKeywordPage({ keyword, initialBlogs }) {
+  return <TagsContent keyword={keyword} initialBlogs={initialBlogs} />;
 }

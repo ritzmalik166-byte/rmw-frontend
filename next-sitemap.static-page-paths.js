@@ -19,7 +19,6 @@ const STATIC_PAGE_PATHS = [
   "/services/radio-advertising",
   "/services/print-advertising",
   "/services/creative-services",
-  "/tags",
   "/portfolio",
   "/portfolio/web-design",
   "/portfolio/brand-identity",
