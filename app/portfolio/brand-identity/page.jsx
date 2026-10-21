@@ -22,7 +22,6 @@ const logos_images = [
   "/portfolio-page/logo/logo_i5.jpg",
   "/portfolio-page/logo/logo_i6.jpg",
   "/portfolio-page/logo/logo_i7.jpg",
-  "/portfolio-page/logo/logo_i8.jpg",
   "/portfolio-page/logo/logo_i9.jpg",
   "/portfolio-page/logo/logo_i10.jpg",
   "/portfolio-page/logo/logo_i11.jpg",
